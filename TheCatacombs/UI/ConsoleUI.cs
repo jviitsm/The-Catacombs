@@ -11,12 +11,12 @@ namespace TheCatacombs.UI
             this.game = game;
         }
 
-        public void DisplayMessage(string message)
+        public static void DisplayMessage(string message)
         {
             Console.WriteLine(message);
         }
 
-        public string GetUserInput()
+        public static string GetUserInput()
         {
             return Console.ReadLine();
         }
