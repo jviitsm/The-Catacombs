@@ -9,6 +9,11 @@ namespace TheCatacombs.Models
         public int Wisdom { get; private set; }
         public int Charisma { get; private set; }
 
+        public Attributes()
+        {
+
+        }
+
         public Attributes(int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma)
         {
             Strength = strength;

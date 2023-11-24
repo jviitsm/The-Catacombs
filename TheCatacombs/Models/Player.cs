@@ -1,16 +1,15 @@
 ﻿using System;
+
 namespace TheCatacombs.Models
 {
     public class Player : Character
     {
-        public Attributes Attributes { get; private set; }
-        public IWeapon? Weapon { get; private set; }
+        public CharacterClass? PlayerClass { get; private set; }
 
-        public Player(string name, int maxHealth, Attributes attributes, IWeapon? weapon) : base(name, maxHealth)
+        public Player(string name, int maxHealth, IWeapon weapon, CharacterClass playerClass)
+            : base(name, maxHealth, weapon, playerClass)
         {
-            Attributes = attributes;
-            Weapon = weapon;
+            PlayerClass = playerClass;
         }
     }
 }
-

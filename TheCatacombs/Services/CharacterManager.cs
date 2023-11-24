@@ -1,4 +1,4 @@
-using System.ComponentModel;
+using System;
 using TheCatacombs.Models;
 using TheCatacombs.Models.Weapons;
 using TheCatacombs.UI;
@@ -7,15 +7,12 @@ namespace TheCatacombs.Services
 {
     public class CharacterManager
     {
-        private IWeapon weapon;
-        private Attributes playerAttributes;
-
-
         public Player CreateCharacter()
         {
-            var name = ChooseName();
-            ChooseClass();
-            Player player = new Player(name, 100, playerAttributes, weapon);
+            string name = ChooseName();
+            CharacterClass playerClass = ChooseClass();
+
+            Player player = new Player(name, 100, playerClass.PreferredWeapon, playerClass);
 
             return player;
         }
@@ -24,12 +21,12 @@ namespace TheCatacombs.Services
         {
             ConsoleUI.DisplayMessage($"Nome: {player.Name}");
             ConsoleUI.DisplayMessage($"Vida: {player.CurrentHealth}/{player.MaxHealth}");
-            ConsoleUI.DisplayMessage($"Força: {player.Attributes.Strength}");
-            ConsoleUI.DisplayMessage($"Destreza: {player.Attributes.Dexterity}");
-            ConsoleUI.DisplayMessage($"Inteligência: {player.Attributes.Intelligence}");
-            ConsoleUI.DisplayMessage($"Sabedoria: {player.Attributes.Wisdom}");
-            ConsoleUI.DisplayMessage($"Constituição: {player.Attributes.Constitution}");
-            ConsoleUI.DisplayMessage($"Carisma: {player.Attributes.Charisma}");
+            ConsoleUI.DisplayMessage($"Força: {player.BaseAttributes.Strength}");
+            ConsoleUI.DisplayMessage($"Destreza: {player.BaseAttributes.Dexterity}");
+            ConsoleUI.DisplayMessage($"Inteligência: {player.BaseAttributes.Intelligence}");
+            ConsoleUI.DisplayMessage($"Sabedoria: {player.BaseAttributes.Wisdom}");
+            ConsoleUI.DisplayMessage($"Constituição: {player.BaseAttributes.Constitution}");
+            ConsoleUI.DisplayMessage($"Carisma: {player.BaseAttributes.Charisma}");
             ConsoleUI.DisplayMessage($"Arma: {player.Weapon?.Name ?? "Nenhuma"}");
         }
 
@@ -39,7 +36,7 @@ namespace TheCatacombs.Services
             return ConsoleUI.GetUserInput();
         }
 
-        private void ChooseClass()
+        private CharacterClass ChooseClass()
         {
             ConsoleUI.DisplayMessage("Escolha uma classe:");
             ConsoleUI.DisplayMessage("1 - Guerreiro");
@@ -57,49 +54,30 @@ namespace TheCatacombs.Services
 
             switch (input)
             {
-                case "1":
-                    playerAttributes = new Attributes(15, 10, 10, 10, 10, 10);
-                    weapon = new Axe();
-                    break;
-                case "2":
-                    playerAttributes = new Attributes(10, 10, 15, 10, 10, 10);
-                    weapon = new Staff();
-                    break;
-                case "3":
-                    playerAttributes = new Attributes(10, 15, 10, 10, 10, 10);
-                    weapon = new Dagger();
-                    break;
-                case "4":
-                    playerAttributes = new Attributes(10, 10, 10, 15, 10, 10);
-                    weapon = new Dagger();
-                    break;
-                case "5":
-                    playerAttributes = new Attributes(15, 10, 10, 10, 10, 10);
-                    weapon = new Dagger();
-                    break;
-                case "6":
-                    playerAttributes = new Attributes(10, 10, 10, 10, 15, 10);
-                    weapon = new Dagger();
-                    break;
-                case "7":
-                    playerAttributes = new Attributes(10, 10, 10, 10, 10, 15);
-                    weapon = new Dagger();
-                    break;
-                case "8":
-                    playerAttributes = new Attributes(10, 10, 10, 10, 10, 10);
-                    weapon = new Dagger();
-                    break;
-                case "9":
-                    playerAttributes = new Attributes(10, 10, 10, 10, 10, 10);
-                    weapon = new Dagger();
-                    break;
-                case "0":
-                    break;
+                case "1": return new CharacterClass("Guerreiro", new Attributes(15, 10, 10, 10, 10, 10), new Axe());
+                case "2": return new CharacterClass("Mago", new Attributes(10, 10, 15, 10, 10, 10), new Staff());
+                case "3": return new CharacterClass("Ladino", new Attributes(10, 15, 10, 10, 10, 10), new Dagger());
+                case "4": return new CharacterClass("Clérigo", new Attributes(10, 10, 10, 15, 10, 10), new Dagger());
+                case "5": return new CharacterClass("Bárbaro", new Attributes(15, 10, 10, 10, 10, 10), new Axe());
+                case "6": return new CharacterClass("Druida", new Attributes(10, 10, 10, 10, 15, 10), new Staff());
+                case "7": return new CharacterClass("Monge", new Attributes(10, 10, 10, 10, 10, 15), new Dagger());
+                case "8": return new CharacterClass("Paladino", new Attributes(10, 10, 10, 10, 10, 10), new Dagger());
+                case "9": return new CharacterClass("Patrulheiro", new Attributes(10, 10, 10, 10, 10, 10), new Dagger());
+                case "0": return null;
                 default:
                     ConsoleUI.DisplayMessage("Opção inválida!");
-                    ChooseClass();
-                    break;
+                    return ChooseClass();
             }
+        }
+
+        private Attributes GetAttributesForClass(CharacterClass characterClass)
+        {
+            return characterClass?.BaseAttributes ?? new Attributes();
+        }
+
+        private IWeapon GetWeaponForClass(CharacterClass characterClass)
+        {
+            return characterClass?.PreferredWeapon ?? new Sword(); // Substitua DefaultWeapon pelo seu tipo de arma padrão
         }
     }
 }

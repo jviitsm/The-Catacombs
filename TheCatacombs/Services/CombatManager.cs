@@ -2,6 +2,7 @@ using TheCatacombs.Models;
 using TheCatacombs.Models.Weapons;
 using TheCatacombs.UI;
 using System;
+using TheCatacombs.UI.Drawings;
 
 namespace TheCatacombs.Services
 {
@@ -14,12 +15,15 @@ namespace TheCatacombs.Services
             Monster monster = MonsterManager.GenerateRandomMonster();
             ConsoleUI.DisplayMessage($"Você encontrou um {monster.Name}!");
 
+            ConsoleUI.DisplayMessage("-------------------------------------");
+            MonsterManager.DisplayMonsterInfo(monster);
+
             while (player.CurrentHealth > 0 && monster.CurrentHealth > 0)
             {
                 PerformCombatRound(player, monster);
             }
 
-            EndCombat(player.CurrentHealth > 0);
+            EndCombat(player.CurrentHealth > 0, monster);
         }
 
 
@@ -46,14 +50,14 @@ namespace TheCatacombs.Services
 
         private static void PerformPlayerAttack(Player player, Monster monster)
         {
-            int playerDamage = CalculateDamage(player.Attributes.Strength, player.Attributes.Dexterity, player.AttackBonus, monster.Defense, player.Weapon?.Damage ?? 0);
+            int playerDamage = CalculateDamage(player.BaseAttributes.Strength, player.BaseAttributes.Dexterity, player.AttackBonus, monster.Defense, player.Weapon?.Damage ?? 0);
             monster.TakeDamage(playerDamage);
             ConsoleUI.DisplayMessage($"Você atacou o {monster.Name} e causou {playerDamage} de dano.");
         }
 
         private static void PerformMonsterAttack(Player player, Monster monster)
         {
-            int monsterDamage = CalculateDamage(monster.Attributes.Strength, monster.Attributes.Dexterity, monster.AttackBonus, player.Defense, monster.Weapon.Damage);
+            int monsterDamage = CalculateDamage(monster.BaseAttributes.Strength, monster.BaseAttributes.Dexterity, monster.AttackBonus, player.Defense, monster.Weapon.Damage);
             player.TakeDamage(monsterDamage);
             ConsoleUI.DisplayMessage($"{monster.Name} atacou você e causou {monsterDamage} de dano.");
 
@@ -69,7 +73,8 @@ namespace TheCatacombs.Services
 
             if (attackRoll >= defenderDefense)
             {
-                int damageRoll = RollDamage(attackerStrength, attackerDexterity, weaponDamage);
+                bool isCritical = attackRoll == 20; // Verifica se é um acerto crítico
+                int damageRoll = RollDamage(attackerStrength, attackerDexterity, weaponDamage, isCritical);
                 return damageRoll;
             }
 
@@ -77,21 +82,22 @@ namespace TheCatacombs.Services
             return 0;
         }
 
+
+        private static int RollDamage(int attackerStrength, int attackerDexterity, int weaponDamage, bool isCritical)
+        {
+            int strengthModifier = (attackerStrength - 10) / 2;
+            int dexterityModifier = (attackerDexterity - 10) / 2;
+            int weaponRoll = isCritical ? 2 * random.Next(1, 7) : random.Next(1, 7);
+
+            return weaponDamage + strengthModifier + dexterityModifier + weaponRoll;
+        }
+
         private static int RollD20()
         {
             return random.Next(1, 21);
         }
 
-        private static int RollDamage(int attackerStrength, int attackerDexterity, int weaponDamage)
-        {
-            int strengthModifier = (attackerStrength - 10) / 2;
-            int dexterityModifier = (attackerDexterity - 10) / 2;
-            int weaponRoll = random.Next(1, 7);
-
-            return weaponDamage + strengthModifier + dexterityModifier + weaponRoll;
-        }
-
-        private static void EndCombat(bool playerWon)
+        private static void EndCombat(bool playerWon, Monster monster)
         {
             if (!playerWon)
             {
@@ -100,7 +106,8 @@ namespace TheCatacombs.Services
             else
             {
                 ConsoleUI.DisplayMessage("Você venceu a batalha!");
-                ConsoleUI.DisplayMessage("Você ganhou 100 pontos de experiência!");
+                ConsoleUI.DisplayMessage($"Você ganhou {monster.Gold} moedas de ouro!");
+                ConsoleUI.DisplayMessage($"Você ganhou {monster.Experience} pontos de experiência!");
             }
         }
     }

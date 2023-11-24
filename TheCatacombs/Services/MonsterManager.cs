@@ -1,5 +1,6 @@
 using TheCatacombs.Models;
 using TheCatacombs.Models.Weapons;
+using TheCatacombs.UI;
 
 public static class MonsterManager
 {
@@ -28,14 +29,38 @@ public static class MonsterManager
     public static Monster GenerateRandomMonster()
     {
         var monsterName = "Goblin";
-
         var monsterMaxHealth = GenerateRandomValueInRange(80, 200);
         var monsterDefense = GenerateRandomValueInRange(1, 5);
         var monsterGold = GenerateRandomValueInRange(1, 3);
         var monsterExperience = GenerateRandomValueInRange(1, 3);
-        var monsterWeapon = new Axe();
+        var monsterRace = "Orc"; // Substitua isso pela lógica para gerar uma raça aleatória para o monstro
         var monsterAttributes = GenerateRandomAttributes();
 
-        return new Monster(monsterName, monsterMaxHealth, monsterDefense, monsterGold, monsterExperience, monsterAttributes, monsterWeapon);
+        // Substitua isso pela lógica para gerar uma arma aleatória para o monstro
+        // A lógica pode ser semelhante à lógica usada para gerar a arma do jogador
+        IWeapon monsterWeapon = new Axe();
+
+        // Crie uma instância de Monster usando o construtor que aceita a arma e, em seguida, ajuste as outras propriedades
+        var monster = new Monster(monsterName, monsterMaxHealth, monsterDefense, monsterAttributes, monsterWeapon, monsterRace, monsterGold, monsterExperience);
+
+        return monster;
+    }
+
+    public static void DisplayMonsterInfo(Monster monster)
+    {
+        ConsoleUI.DisplayMessage($"Nome: {monster.Name}");
+        ConsoleUI.DisplayMessage($"Raça: {monster.Race}");
+        ConsoleUI.DisplayMessage($"Vida: {monster.CurrentHealth}/{monster.MaxHealth}");
+        ConsoleUI.DisplayMessage($"Defesa: {monster.Defense}");
+        ConsoleUI.DisplayMessage($"Atributos:");
+        ConsoleUI.DisplayMessage($"  Força: {monster.BaseAttributes.Strength}");
+        ConsoleUI.DisplayMessage($"  Destreza: {monster.BaseAttributes.Dexterity}");
+        ConsoleUI.DisplayMessage($"  Inteligência: {monster.BaseAttributes.Intelligence}");
+        ConsoleUI.DisplayMessage($"  Sabedoria: {monster.BaseAttributes.Wisdom}");
+        ConsoleUI.DisplayMessage($"  Constituição: {monster.BaseAttributes.Constitution}");
+        ConsoleUI.DisplayMessage($"  Carisma: {monster.BaseAttributes.Charisma}");
+        ConsoleUI.DisplayMessage($"Ouro: {monster.Gold}");
+        ConsoleUI.DisplayMessage($"Experiência: {monster.Experience}");
+        ConsoleUI.DisplayMessage($"Arma: {monster.Weapon?.Name ?? "Nenhuma"}");
     }
 }

@@ -2,19 +2,18 @@ namespace TheCatacombs.Models
 {
     public class Monster : Character
     {
-
-        public Attributes Attributes { get; private set; }
-        public int Defense { get; private set; }
+        public string Race { get; private set; }
         public int Gold { get; private set; }
         public int Experience { get; private set; }
-        public IWeapon Weapon { get; private set; }
 
-        public Monster(string name, int maxHealth, int defense, int gold, int experience, Attributes attributes, IWeapon weapon) : base(name, maxHealth)
+        public Monster(string name, int maxHealth, int defense, Attributes baseAttributes, IWeapon weapon, string race, int gold, int experience)
+            : base(name, maxHealth, weapon, null)
         {
-            Defense = defense;
+            Race = race;
             Gold = gold;
             Experience = experience;
-            Attributes = attributes;
+            Defense = defense;
+            BaseAttributes = baseAttributes;
             Weapon = weapon;
         }
     }
