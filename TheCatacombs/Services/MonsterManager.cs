@@ -46,6 +46,24 @@ public static class MonsterManager
         return monster;
     }
 
+    public static Monster GetSpecificMonster()
+    {
+        var monsterName = "Bruxa";
+        var monsterMaxHealth = 300;
+        var monsterDefense = 10;
+        var monsterGold = 100;
+        var monsterExperience = 100;
+        var monsterRace = "Bruxa";
+        var monsterAttributes = new Attributes(12, 13, 10, 10, 10, 10);
+
+        IWeapon monsterWeapon = new Staff();
+
+        var monster = new Monster(monsterName, monsterMaxHealth, monsterDefense, monsterAttributes, monsterWeapon, monsterRace, monsterGold, monsterExperience);
+
+        return monster;
+
+    }
+
     public static void DisplayMonsterInfo(Monster monster)
     {
         ConsoleUI.DisplayMessage($"Nome: {monster.Name}");

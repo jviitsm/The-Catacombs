@@ -7,18 +7,29 @@ namespace TheCatacombs.Services
 {
     public class CharacterManager
     {
+
+        private GameManager gameManager;
+        private Player player;
+
+
+        public CharacterManager(GameManager gameManager)
+        {
+            this.gameManager = gameManager;
+
+        }
+
         public Player CreateCharacter()
         {
             string name = ChooseName();
             CharacterClass playerClass = ChooseClass();
 
-            Player player = new Player(name, 100, playerClass.PreferredWeapon, playerClass);
-
+            player = new Player(name, 100, playerClass.PreferredWeapon, playerClass);
             return player;
         }
 
-        public static void DisplayCharacterInfo(Player player)
+        public void DisplayCharacterInfo()
         {
+
             ConsoleUI.DisplayMessage($"Nome: {player.Name}");
             ConsoleUI.DisplayMessage($"Vida: {player.CurrentHealth}/{player.MaxHealth}");
             ConsoleUI.DisplayMessage($"Força: {player.BaseAttributes.Strength}");
@@ -28,6 +39,10 @@ namespace TheCatacombs.Services
             ConsoleUI.DisplayMessage($"Constituição: {player.BaseAttributes.Constitution}");
             ConsoleUI.DisplayMessage($"Carisma: {player.BaseAttributes.Charisma}");
             ConsoleUI.DisplayMessage($"Arma: {player.Weapon?.Name ?? "Nenhuma"}");
+
+            ConsoleUI.DisplayMessage("Pressione qualquer tecla para continuar...");
+
+
         }
 
         private string ChooseName()

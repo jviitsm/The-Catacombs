@@ -1,14 +1,61 @@
+// ExplorationManager.cs
 using TheCatacombs.Models;
 using TheCatacombs.UI;
 
 namespace TheCatacombs.Services
 {
-
     public class ExplorationManager
     {
-        public void StartExploration(Player player)
+        private GameManager gameManager;
+        private CharacterManager characterManager;
+
+        public ExplorationManager(GameManager gameManager)  // Adicione o GameManager como parâmetro
         {
-            ConsoleUI.DisplayMessage("Você acorda em uma sala escura e úmida.");
+            this.gameManager = gameManager;
+            this.characterManager = gameManager.GetCharacterManager();
+        }
+
+        public void StartExploration()
+        {
+            var input = DisplayExplorationOptions();
+
+            switch (input)
+            {
+                case "1":
+                    OpenDoor();
+                    break;
+                case "2":
+                    gameManager.StartCombat();
+                    break;
+                case "3":
+                    characterManager.DisplayCharacterInfo();
+                    StartExploration();
+                    break;
+                case "0":
+                    EndExploration();
+                    break;
+                default:
+                    ConsoleUI.DisplayMessage("Opção inválida!");
+                    StartExploration();
+                    break;
+            }
+
+        }
+
+        private void OpenDoor()
+        {
+            ConsoleUI.DisplayMessage("Você abriu a porta.");
+            ConsoleUI.DisplayMessage("Voce se depara com uma princesa");
+            ConsoleUI.DisplayMessage("A princesa diz: 'Obrigada por me salvar!'");
+            ConsoleUI.DisplayMessage("Mas eu não sou uma princesa de verdade, eu sou uma bruxa!");
+
+            gameManager.StartCombat(false);
+
+
+        }
+
+        private string DisplayExplorationOptions()
+        {
             ConsoleUI.DisplayMessage("Você está em uma sala escura e úmida.");
             ConsoleUI.DisplayMessage("Você vê uma porta à sua frente.");
             ConsoleUI.DisplayMessage("O que você faz?");
@@ -19,45 +66,12 @@ namespace TheCatacombs.Services
 
             string input = ConsoleUI.GetUserInput();
 
-            switch (input)
-            {
-                case "1":
-                    break;
-                case "2":
-                    PerformExplorationRound(player);
-                    break;
-                case "3":
-                    CharacterManager.DisplayCharacterInfo(player);
-                    break;
-                case "4":
-                    break;
-                case "0":
-                    EndExploration();
-                    break;
-                default:
-                    ConsoleUI.DisplayMessage("Opção inválida!");
-                    break;
-            }
-
+            return input;
         }
 
-        private static void PerformExplorationRound(Player player)
-        {
-            ConsoleUI.DisplayMessage("Você explora a sala...");
-            ConsoleUI.DisplayMessage("Você encontra um monstro! e ele te ataca!");
-
-            CombatManager combatManager = new();
-
-            combatManager.StartCombat(player);
-
-
-
-        }
-
-        private static void EndExploration()
+        private void EndExploration()
         {
             // Implementação para o fim da exploração...
         }
     }
-
 }
