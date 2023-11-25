@@ -26,5 +26,11 @@ namespace TheCatacombs.Entities
             Array monsterTypes = Enum.GetValues(typeof(MonsterType));
             return (MonsterType)monsterTypes.GetValue(random.Next(monsterTypes.Length));
         }
+
+        public void SetNewPosition(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
     }
 }
