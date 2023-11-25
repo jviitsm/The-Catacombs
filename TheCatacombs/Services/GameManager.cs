@@ -1,7 +1,7 @@
 // GameManager.cs
 using TheCatacombs.Enums;
-using TheCatacombs.Models;
-using TheCatacombs.Models.Weapons;
+using TheCatacombs.Entities;
+using TheCatacombs.Entities.Weapons;
 using TheCatacombs.UI;
 
 namespace TheCatacombs.Services
@@ -14,6 +14,7 @@ namespace TheCatacombs.Services
         private ExplorationManager explorationManager;
         private CharacterManager characterManager;
         private GameState currentState;
+        private MovementManager movementManager;
 
         public static GameManager Instance
         {
@@ -30,8 +31,8 @@ namespace TheCatacombs.Services
         private GameManager()
         {
             currentState = GameState.MainMenu;
-            characterManager = new CharacterManager(this);  // Mova a criação aqui
-            explorationManager = new ExplorationManager(this);  // Mova a criação aqui
+            characterManager = new CharacterManager(this);
+            explorationManager = new ExplorationManager(this);
         }
 
         public void StartGame()
@@ -39,6 +40,9 @@ namespace TheCatacombs.Services
             ConsoleUI.DisplayMessage("Bem-vindo ao The Catacombs!");
             currentState = GameState.Exploration;
             player = characterManager.CreateCharacter();
+
+            movementManager = new MovementManager(this);
+
             explorationManager.StartExploration();
         }
 
@@ -73,6 +77,11 @@ namespace TheCatacombs.Services
         public ExplorationManager GetExplorationManager()
         {
             return explorationManager;
+        }
+
+        public MovementManager GetMovementManager()
+        {
+            return movementManager;
         }
     }
 }

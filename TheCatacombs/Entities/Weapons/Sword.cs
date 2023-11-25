@@ -1,4 +1,4 @@
-namespace TheCatacombs.Models.Weapons
+namespace TheCatacombs.Entities.Weapons
 {
     public class Sword : IWeapon
     {

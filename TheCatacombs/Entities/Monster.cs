@@ -1,4 +1,4 @@
-namespace TheCatacombs.Models
+namespace TheCatacombs.Entities
 {
     public class Monster : Character
     {

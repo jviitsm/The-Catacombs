@@ -1,5 +1,5 @@
-using TheCatacombs.Models;
-namespace TheCatacombs.Models
+using TheCatacombs.Entities;
+namespace TheCatacombs.Entities
 {
     public class CharacterClass
     {

@@ -1,6 +1,6 @@
-using TheCatacombs.Models.Weapons;
+using TheCatacombs.Entities.Weapons;
 
-namespace TheCatacombs.Models
+namespace TheCatacombs.Entities
 {
     public class Character
     {

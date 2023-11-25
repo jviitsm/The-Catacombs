@@ -1,6 +1,6 @@
 using System;
-using TheCatacombs.Models;
-using TheCatacombs.Models.Weapons;
+using TheCatacombs.Entities;
+using TheCatacombs.Entities.Weapons;
 using TheCatacombs.UI;
 
 namespace TheCatacombs.Services
@@ -9,6 +9,7 @@ namespace TheCatacombs.Services
     {
 
         private GameManager gameManager;
+        private RoomManager roomManager;
         private Player player;
 
 
@@ -20,10 +21,12 @@ namespace TheCatacombs.Services
 
         public Player CreateCharacter()
         {
+            roomManager = new RoomManager();
             string name = ChooseName();
             CharacterClass playerClass = ChooseClass();
+            Room startingRoom = roomManager.GetRandomRoom();
 
-            player = new Player(name, 100, playerClass.PreferredWeapon, playerClass);
+            player = new Player(name, 100, playerClass.PreferredWeapon, playerClass, startingRoom);
             return player;
         }
 
@@ -39,6 +42,8 @@ namespace TheCatacombs.Services
             ConsoleUI.DisplayMessage($"Constituição: {player.BaseAttributes.Constitution}");
             ConsoleUI.DisplayMessage($"Carisma: {player.BaseAttributes.Charisma}");
             ConsoleUI.DisplayMessage($"Arma: {player.Weapon?.Name ?? "Nenhuma"}");
+
+            ConsoleUI.DisplayMessage($"Sala: {player.CurrentRoom.Description} {player.CurrentRoom.X}, {player.CurrentRoom.Y}");
 
             ConsoleUI.DisplayMessage("Pressione qualquer tecla para continuar...");
 

@@ -1,5 +1,5 @@
-using TheCatacombs.Models;
-using TheCatacombs.Models.Weapons;
+using TheCatacombs.Entities;
+using TheCatacombs.Entities.Weapons;
 using TheCatacombs.UI;
 
 public static class MonsterManager

@@ -1,5 +1,5 @@
 // ExplorationManager.cs
-using TheCatacombs.Models;
+using TheCatacombs.Entities;
 using TheCatacombs.UI;
 
 namespace TheCatacombs.Services
@@ -8,15 +8,19 @@ namespace TheCatacombs.Services
     {
         private GameManager gameManager;
         private CharacterManager characterManager;
+        private RoomManager roomManager;
+        private Room currentRoom;
 
         public ExplorationManager(GameManager gameManager)  // Adicione o GameManager como parâmetro
         {
             this.gameManager = gameManager;
             this.characterManager = gameManager.GetCharacterManager();
+            this.roomManager = new RoomManager();
         }
 
         public void StartExploration()
         {
+
             var input = DisplayExplorationOptions();
 
             switch (input)
@@ -25,7 +29,7 @@ namespace TheCatacombs.Services
                     OpenDoor();
                     break;
                 case "2":
-                    gameManager.StartCombat();
+                    gameManager.GetMovementManager().Move();
                     break;
                 case "3":
                     characterManager.DisplayCharacterInfo();
@@ -45,19 +49,19 @@ namespace TheCatacombs.Services
         private void OpenDoor()
         {
             ConsoleUI.DisplayMessage("Você abriu a porta.");
-            ConsoleUI.DisplayMessage("Voce se depara com uma princesa");
-            ConsoleUI.DisplayMessage("A princesa diz: 'Obrigada por me salvar!'");
-            ConsoleUI.DisplayMessage("Mas eu não sou uma princesa de verdade, eu sou uma bruxa!");
+            GenerateRandomRoom();
+            StartExploration();
+        }
 
-            gameManager.StartCombat(false);
-
-
+        private void GenerateRandomRoom()
+        {
+            currentRoom = roomManager.GetRandomRoom();
+            gameManager.GetPlayer().SetCurrentRoom(currentRoom);
+            ConsoleUI.DisplayMessage(currentRoom.Description);
         }
 
         private string DisplayExplorationOptions()
         {
-            ConsoleUI.DisplayMessage("Você está em uma sala escura e úmida.");
-            ConsoleUI.DisplayMessage("Você vê uma porta à sua frente.");
             ConsoleUI.DisplayMessage("O que você faz?");
             ConsoleUI.DisplayMessage("1 - Abre a porta");
             ConsoleUI.DisplayMessage("2 - Explora a sala");
