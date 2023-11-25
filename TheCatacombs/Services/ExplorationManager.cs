@@ -35,8 +35,12 @@ namespace TheCatacombs.Services
                     characterManager.DisplayCharacterInfo();
                     StartExploration();
                     break;
+                case "4":
+                    characterManager.DisplayWeaponInfo();
+                    StartExploration();
+                    break;
                 case "0":
-                    EndExploration();
+                    gameManager.StartCombat();
                     break;
                 default:
                     ConsoleUI.DisplayMessage("Opção inválida!");

@@ -2,7 +2,7 @@ using TheCatacombs.Entities.Weapons;
 
 namespace TheCatacombs.Entities
 {
-    public class Character
+    public abstract class Character
     {
         public string Name { get; private set; }
         public int MaxHealth { get; private set; }
@@ -24,10 +24,11 @@ namespace TheCatacombs.Entities
 
         }
 
-
         public void TakeDamage(int damage)
         {
             CurrentHealth -= damage;
         }
+
+        public abstract void Draw();
     }
 }

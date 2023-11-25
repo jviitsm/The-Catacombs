@@ -1,4 +1,5 @@
 ﻿using System;
+using TheCatacombs.Enums;
 
 namespace TheCatacombs.Entities
 {
@@ -18,6 +19,11 @@ namespace TheCatacombs.Entities
         public void SetCurrentRoom(Room room)
         {
             CurrentRoom = room;
+        }
+
+        public override void Draw()
+        {
+            Console.Write("P");
         }
     }
 }

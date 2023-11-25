@@ -1,12 +1,13 @@
 namespace TheCatacombs.Entities
 {
-    public class Monster : Character
+    public abstract class Monster : Character
     {
-        public string Race { get; private set; }
+        public MonsterType Race { get; private set; }
         public int Gold { get; private set; }
         public int Experience { get; private set; }
 
-        public Monster(string name, int maxHealth, int defense, Attributes baseAttributes, IWeapon weapon, string race, int gold, int experience)
+
+        public Monster(string name, int maxHealth, int defense, Attributes baseAttributes, IWeapon weapon, MonsterType race, int gold, int experience)
             : base(name, maxHealth, weapon, null)
         {
             Race = race;

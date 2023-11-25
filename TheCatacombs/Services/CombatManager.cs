@@ -23,14 +23,7 @@ namespace TheCatacombs.Services
         {
             Monster monster;
 
-            if (useRandomMonster)
-            {
-                monster = MonsterManager.GenerateRandomMonster();
-            }
-            else
-            {
-                monster = MonsterManager.GetSpecificMonster();
-            }
+            monster = MonsterManager.GenerateRandomMonster();
 
             PerformCombat(monster);
         }

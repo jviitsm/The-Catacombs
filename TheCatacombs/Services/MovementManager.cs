@@ -20,25 +20,34 @@ namespace TheCatacombs.Services
 
             while (continueMoving)
             {
-                ConsoleUI.DisplayMessage("Escolha a direção para se mover (n/s/e/w):");
-                ConsoleUI.DisplayMessage("1 - Sair da movimentação");
-                string direction = ConsoleUI.GetUserInput();
-
                 int currentX = player.CurrentRoom.X;
                 int currentY = player.CurrentRoom.Y;
 
+                Console.Clear();
+                ConsoleUI.DisplayMessage("--------------------");
+                player.CurrentRoom.DrawRoom();
+                ConsoleUI.DisplayMessage("--------------------");
+                ConsoleUI.DisplayMessage("Escolha a direção para se mover:");
+                ConsoleUI.DisplayMessage("W - Cima");
+                ConsoleUI.DisplayMessage("S - Baixo");
+                ConsoleUI.DisplayMessage("A - Esquerda");
+                ConsoleUI.DisplayMessage("D - Direita");
+                ConsoleUI.DisplayMessage("1 - Sair da movimentação");
+                string direction = ConsoleUI.GetUserInput();
+
+
                 switch (direction.ToLower())
                 {
-                    case "n":
+                    case "w":
                         continueMoving = MoveTo(currentX, currentY + 1);
                         break;
                     case "s":
                         continueMoving = MoveTo(currentX, currentY - 1);
                         break;
-                    case "e":
+                    case "d":
                         continueMoving = MoveTo(currentX + 1, currentY);
                         break;
-                    case "w":
+                    case "a":
                         continueMoving = MoveTo(currentX - 1, currentY);
                         break;
                     case "1":
@@ -47,7 +56,7 @@ namespace TheCatacombs.Services
                         break;
                     default:
                         ConsoleUI.DisplayMessage("Direção inválida.");
-                        continueMoving = true; // Continue o loop se a direção for inválida
+                        continueMoving = true;
                         break;
                 }
             }

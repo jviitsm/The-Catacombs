@@ -6,5 +6,7 @@ namespace TheCatacombs.Entities
         int Damage { get; }
         int Weight { get; }
 
+        void Draw();
+
     }
 }

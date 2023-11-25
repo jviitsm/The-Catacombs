@@ -41,7 +41,7 @@ namespace TheCatacombs.Services
             ConsoleUI.DisplayMessage($"Sabedoria: {player.BaseAttributes.Wisdom}");
             ConsoleUI.DisplayMessage($"Constituição: {player.BaseAttributes.Constitution}");
             ConsoleUI.DisplayMessage($"Carisma: {player.BaseAttributes.Charisma}");
-            ConsoleUI.DisplayMessage($"Arma: {player.Weapon?.Name ?? "Nenhuma"}");
+            DisplayWeaponInfo();
 
             ConsoleUI.DisplayMessage($"Sala: {player.CurrentRoom.Description} {player.CurrentRoom.X}, {player.CurrentRoom.Y}");
 
@@ -88,6 +88,15 @@ namespace TheCatacombs.Services
                     ConsoleUI.DisplayMessage("Opção inválida!");
                     return ChooseClass();
             }
+        }
+
+        public void DisplayWeaponInfo()
+        {
+            ConsoleUI.DisplayMessage($"Arma: {player.Weapon?.Name}");
+            ConsoleUI.DisplayMessage($"Dano: {player.Weapon?.Damage}");
+            ConsoleUI.DisplayMessage($"Peso: {player.Weapon?.Weight}");
+            player.Weapon?.Draw();
+            ConsoleUI.DisplayMessage("Pressione qualquer tecla para continuar...");
         }
 
         private Attributes GetAttributesForClass(CharacterClass characterClass)

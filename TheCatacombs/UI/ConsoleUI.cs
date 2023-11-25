@@ -14,5 +14,11 @@ namespace TheCatacombs.UI
             return Console.ReadLine();
         }
 
+        public static void ConsoleClear()
+        {
+            Console.Clear();
+            Console.Write("\f\u001bc\x1b[3J");
+        }
+
     }
 }
