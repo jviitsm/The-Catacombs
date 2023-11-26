@@ -66,18 +66,33 @@ namespace TheCatacombs.Services
         {
             if (IsValidPosition(targetX, targetY, player.CurrentRoom.Width, player.CurrentRoom.Height))
             {
-                player.CurrentRoom.SetNewPosition(targetX, targetY);
-                ConsoleUI.DisplayMessage("Você se moveu para a posição: " + targetX + "," + targetY);
-                ConsoleUI.DisplayMessage("--------------------");
-                return true; // Continue movendo
+                if (HasMonsterAtPosition(targetX, targetY))
+                {
+                    ConsoleUI.DisplayMessage("Você encontrou um monstro! Combate iniciado.");
+                    player.CurrentRoom.SetNewPosition(targetX, targetY);
+                    player.CurrentRoom.setLastMonsterID(player.CurrentRoom.MonstersPositions.Find(monster => monster.X == targetX && monster.Y == targetY).ID);
+                    gameManager.StartCombat();
+                    return false;
+                }
+                else
+                {
+                    player.CurrentRoom.SetNewPosition(targetX, targetY);
+                    ConsoleUI.DisplayMessage("Você se moveu para a posição: " + targetX + "," + targetY);
+                    ConsoleUI.DisplayMessage("--------------------");
+                    return true;
+                }
             }
             else
             {
                 ConsoleUI.DisplayMessage("Você não pode se mover nessa direção.");
-                return true; // Continue movendo mesmo se a direção for inválida
+                return false;
             }
         }
 
+        private bool HasMonsterAtPosition(int x, int y)
+        {
+            return player.CurrentRoom.MonstersPositions.Any(monster => monster.X == x && monster.Y == y && !monster.IsDefeated);
+        }
 
         private bool IsValidPosition(int x, int y, int maxX, int maxY)
         {

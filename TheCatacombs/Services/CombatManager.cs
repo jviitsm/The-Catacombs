@@ -134,6 +134,7 @@ namespace TheCatacombs.Services
 
         private void ContinueAfterVictory()
         {
+            player.CurrentRoom.MonstersPositions.Find(monster => monster.ID == player.CurrentRoom.LastMonsterID).SetDefeated();
             gameManager.GetExplorationManager().StartExploration();
         }
     }
