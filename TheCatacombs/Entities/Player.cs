@@ -8,12 +8,13 @@ namespace TheCatacombs.Entities
         public CharacterClass? PlayerClass { get; private set; }
         public Room CurrentRoom { get; set; }
 
-        public Player(string name, int maxHealth, IWeapon weapon, CharacterClass playerClass, Room startingRoom)
-            : base(name, maxHealth, weapon, playerClass)
-        {
-            PlayerClass = playerClass;
-            CurrentRoom = new Room(startingRoom.Description, startingRoom.MonsterType);
 
+        public static class Factory
+        {
+            public static Player Create(string name, int maxHealth, IWeapon weapon, CharacterClass playerClass, Room startingRoom)
+            {
+                return new Player(name, maxHealth, weapon, playerClass, startingRoom);
+            }
         }
 
         public void SetCurrentRoom(Room room)
@@ -24,6 +25,13 @@ namespace TheCatacombs.Entities
         public override void Draw()
         {
             Console.Write("P");
+        }
+
+        private Player(string name, int maxHealth, IWeapon weapon, CharacterClass playerClass, Room startingRoom)
+            : base(name, maxHealth, weapon, playerClass)
+        {
+            PlayerClass = playerClass;
+            CurrentRoom = startingRoom;
         }
     }
 }

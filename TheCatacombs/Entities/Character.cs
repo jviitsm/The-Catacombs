@@ -20,7 +20,7 @@ namespace TheCatacombs.Entities
             CurrentHealth = maxHealth;
             Class = characterClass;
             Weapon = weapon;
-            BaseAttributes = Class?.BaseAttributes ?? new Attributes();
+            BaseAttributes = Class?.BaseAttributes ?? Attributes.Factory.Create();
 
         }
 

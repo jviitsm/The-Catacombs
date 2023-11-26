@@ -8,6 +8,16 @@ namespace TheCatacombs.Entities.Weapons
         public int Damage { get; } = 8;
         public int Weight { get; } = 7;
 
+        public static class Factory
+        {
+            public static Sword Create()
+            {
+                return new Sword();
+            }
+        }
+
+        private Sword() { }
+
         public void Draw()
         {
             ConsoleUI.DisplayMessage("    /");

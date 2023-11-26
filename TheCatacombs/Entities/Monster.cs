@@ -6,7 +6,6 @@ namespace TheCatacombs.Entities
         public int Gold { get; private set; }
         public int Experience { get; private set; }
 
-
         public Monster(string name, int maxHealth, int defense, Attributes baseAttributes, IWeapon weapon, MonsterType race, int gold, int experience)
             : base(name, maxHealth, weapon, null)
         {

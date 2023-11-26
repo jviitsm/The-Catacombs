@@ -8,6 +8,16 @@ namespace TheCatacombs.Entities.Weapons
         public int Damage { get; } = 5;
         public int Weight { get; } = 3;
 
+        public static class Factory
+        {
+            public static Staff Create()
+            {
+                return new Staff();
+            }
+        }
+
+        private Staff() { }
+
         public void Draw()
         {
             ConsoleUI.DisplayMessage(" .||,  ");

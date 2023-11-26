@@ -7,7 +7,15 @@ namespace TheCatacombs.Entities
         public Attributes BaseAttributes { get; set; }
         public IWeapon PreferredWeapon { get; set; }
 
-        public CharacterClass(string className, Attributes baseAttributes, IWeapon preferredWeapon)
+        public class Factory
+        {
+            public static CharacterClass Create(string className, Attributes baseAttributes, IWeapon preferredWeapon)
+            {
+                return new CharacterClass(className, baseAttributes, preferredWeapon);
+            }
+        }
+
+        private CharacterClass(string className, Attributes baseAttributes, IWeapon preferredWeapon)
         {
             ClassName = className;
             BaseAttributes = baseAttributes;

@@ -17,7 +17,7 @@ public static class MonsterManager
 
     private static Attributes GenerateRandomAttributes()
     {
-        return new Attributes(
+        return Attributes.Factory.Create(
             GenerateRandomAttributeValue(),
             GenerateRandomAttributeValue(),
             GenerateRandomAttributeValue(),
@@ -35,11 +35,9 @@ public static class MonsterManager
         var monsterExperience = GenerateRandomValueInRange(1, 3);
         var monsterAttributes = GenerateRandomAttributes();
 
-        IWeapon monsterWeapon = new Axe();
+        IWeapon monsterWeapon = Axe.Factory.Create();
 
-        // Crie uma instância de Monster usando o construtor que aceita a arma e, em seguida, ajuste as outras propriedades
-        var goblin = new Goblin("Monstrinho", monsterMaxHealth, monsterDefense, monsterAttributes, monsterWeapon, MonsterType.Goblin, monsterGold, monsterExperience);
-
+        var goblin = Goblin.Factory.Create("Monstrinho", monsterMaxHealth, monsterDefense, monsterAttributes, monsterWeapon, monsterGold, monsterExperience);
 
         return goblin;
     }

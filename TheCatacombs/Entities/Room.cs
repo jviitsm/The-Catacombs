@@ -8,7 +8,8 @@ namespace TheCatacombs.Entities
     {
         public string Description { get; set; }
         public MonsterType MonsterType { get; set; }
-        public bool IsBossRoom { get; set; } = false;
+        public int Level { get; set; } = 1;
+        public bool IsBossRoom => CheckIsBossLevel();
         public bool IsLocked { get; set; }
         public bool IsCleared { get; set; } = false;
         public int Height { get; set; } = 10; // Altura padrão
@@ -17,21 +18,23 @@ namespace TheCatacombs.Entities
         public int Y { get; set; } = 0; // Coordenada Y da sala no mapa
         public List<Tuple<int, int>> VisitedPositions { get; set; } = new List<Tuple<int, int>>();
 
-
         private static Random random = new Random();
 
-        public Room(string description, MonsterType? monsterType = null)
+        private Room(string description, MonsterType? monsterType = null)
         {
             Description = description;
             MonsterType = monsterType ?? GetRandomMonsterType();
+            Level++;
             IsLocked = false;
             VisitedPositions.Add(new Tuple<int, int>(X, Y));
         }
 
-        private static MonsterType GetRandomMonsterType()
+        public static class Factory
         {
-            Array monsterTypes = Enum.GetValues(typeof(MonsterType));
-            return (MonsterType)monsterTypes.GetValue(random.Next(monsterTypes.Length));
+            public static Room Create(string description, MonsterType? monsterType = null)
+            {
+                return new Room(description, monsterType);
+            }
         }
 
         public void SetNewPosition(int x, int y)
@@ -67,6 +70,18 @@ namespace TheCatacombs.Entities
 
             Console.WriteLine($"Você está na sala: {Description}");
         }
+
+        private bool CheckIsBossLevel()
+        {
+            return Level % 5 == 0;
+        }
+
+        private static MonsterType GetRandomMonsterType()
+        {
+            Array monsterTypes = Enum.GetValues(typeof(MonsterType));
+            return (MonsterType)monsterTypes.GetValue(random.Next(monsterTypes.Length));
+        }
+
 
     }
 }

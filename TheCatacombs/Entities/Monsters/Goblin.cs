@@ -4,10 +4,17 @@ namespace TheCatacombs.Entities.Monsters
 {
     public class Goblin : Monster
     {
-        public Goblin(string name, int health, int damage, Attributes attributes, IWeapon weapon, MonsterType race, int positionX, int positionY)
-         : base(name, health, damage, attributes, weapon, race, positionX, positionY)
+        public static class Factory
         {
+            public static Goblin Create(string name, int health, int damage, Attributes attributes, IWeapon weapon, int positionX, int positionY)
+            {
+                return new Goblin(name, health, damage, attributes, weapon, positionX, positionY);
+            }
         }
+
+        private Goblin(string name, int health, int damage, Attributes attributes, IWeapon weapon, int positionX, int positionY)
+         : base(name, health, damage, attributes, weapon, MonsterType.Goblin, positionX, positionY) { }
+
 
         public override void Draw()
         {

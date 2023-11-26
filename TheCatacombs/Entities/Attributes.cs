@@ -9,12 +9,20 @@ namespace TheCatacombs.Entities
         public int Wisdom { get; private set; }
         public int Charisma { get; private set; }
 
-        public Attributes()
+        public static class Factory
         {
+            public static Attributes Create(int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma)
+            {
+                return new Attributes(strength, dexterity, constitution, intelligence, wisdom, charisma);
+            }
 
+            public static Attributes Create()
+            {
+                return new Attributes(0, 0, 0, 0, 0, 0);
+            }
         }
 
-        public Attributes(int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma)
+        private Attributes(int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma)
         {
             Strength = strength;
             Dexterity = dexterity;
