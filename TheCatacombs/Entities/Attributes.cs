@@ -8,6 +8,8 @@ namespace TheCatacombs.Entities
         public int Intelligence { get; private set; }
         public int Wisdom { get; private set; }
         public int Charisma { get; private set; }
+        public int ConstitutionModifier => CalculateModifier(Constitution);
+
 
         public static class Factory
         {
@@ -30,6 +32,11 @@ namespace TheCatacombs.Entities
             Intelligence = intelligence;
             Wisdom = wisdom;
             Charisma = charisma;
+        }
+
+        public static int CalculateModifier(int score)
+        {
+            return (int)Math.Floor((score - 10) / 2.0);
         }
 
         public void IncreaseStrength(int amount) => Strength += amount;

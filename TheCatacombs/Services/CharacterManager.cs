@@ -26,7 +26,7 @@ namespace TheCatacombs.Services
             CharacterClass playerClass = ChooseClass();
             Room startingRoom = roomManager.GetRandomRoom();
 
-            player = Player.Factory.Create(name, 100, playerClass.PreferredWeapon, playerClass, startingRoom);
+            player = Player.Factory.Create(name, playerClass.PreferredWeapon, playerClass, startingRoom);
             return player;
         }
 
@@ -34,6 +34,7 @@ namespace TheCatacombs.Services
         {
 
             ConsoleUI.DisplayMessage($"Nome: {player.Name}");
+            ConsoleUI.DisplayMessage($"Level: {player.Level}");
             ConsoleUI.DisplayMessage($"Vida: {player.CurrentHealth}/{player.MaxHealth}");
             ConsoleUI.DisplayMessage($"Força: {player.BaseAttributes.Strength}");
             ConsoleUI.DisplayMessage($"Destreza: {player.BaseAttributes.Dexterity}");
@@ -74,15 +75,15 @@ namespace TheCatacombs.Services
 
             switch (input)
             {
-                case "1": return CharacterClass.Factory.Create("Guerreiro", Attributes.Factory.Create(15, 10, 10, 10, 10, 10), Axe.Factory.Create());
-                case "2": return CharacterClass.Factory.Create("Mago", Attributes.Factory.Create(10, 10, 15, 10, 10, 10), Staff.Factory.Create());
-                case "3": return CharacterClass.Factory.Create("Ladino", Attributes.Factory.Create(10, 15, 10, 10, 10, 10), Dagger.Factory.Create());
-                case "4": return CharacterClass.Factory.Create("Clérigo", Attributes.Factory.Create(10, 10, 10, 15, 10, 10), Dagger.Factory.Create());
-                case "5": return CharacterClass.Factory.Create("Bárbaro", Attributes.Factory.Create(15, 10, 10, 10, 10, 10), Axe.Factory.Create());
-                case "6": return CharacterClass.Factory.Create("Druida", Attributes.Factory.Create(10, 10, 10, 10, 15, 10), Staff.Factory.Create());
-                case "7": return CharacterClass.Factory.Create("Monge", Attributes.Factory.Create(10, 10, 10, 10, 10, 15), Dagger.Factory.Create());
-                case "8": return CharacterClass.Factory.Create("Paladino", Attributes.Factory.Create(10, 10, 10, 10, 10, 10), Dagger.Factory.Create());
-                case "9": return CharacterClass.Factory.Create("Patrulheiro", Attributes.Factory.Create(10, 10, 10, 10, 10, 10), Dagger.Factory.Create());
+                case "1": return CreateWarrior();
+                case "2": return CreateWizard();
+                case "3": return CreateRogue();
+                case "4": return CreateCleric();
+                case "5": return CreateBarbarian();
+                case "6": return CreateDruid();
+                case "7": return CreateMonk();
+                case "8": return CreatePaladin();
+                case "9": return CreateRanger();
                 case "0": return null;
                 default:
                     ConsoleUI.DisplayMessage("Opção inválida!");
@@ -97,6 +98,51 @@ namespace TheCatacombs.Services
             ConsoleUI.DisplayMessage($"Peso: {player.Weapon?.Weight}");
             player.Weapon?.Draw();
             ConsoleUI.DisplayMessage("Pressione qualquer tecla para continuar...");
+        }
+
+        private static CharacterClass CreateWarrior()
+        {
+            return CharacterClass.Factory.Create("Guerreiro", Attributes.Factory.Create(15, 10, 10, 10, 10, 10), 12, Axe.Factory.Create());
+        }
+
+        private static CharacterClass CreateWizard()
+        {
+            return CharacterClass.Factory.Create("Mago", Attributes.Factory.Create(10, 10, 15, 10, 10, 10), 6, Staff.Factory.Create());
+        }
+
+        private static CharacterClass CreateRogue()
+        {
+            return CharacterClass.Factory.Create("Ladino", Attributes.Factory.Create(10, 15, 10, 10, 10, 10), 8, Dagger.Factory.Create());
+        }
+
+        private static CharacterClass CreateCleric()
+        {
+            return CharacterClass.Factory.Create("Clérigo", Attributes.Factory.Create(10, 10, 10, 15, 10, 10), 8, Staff.Factory.Create());
+        }
+
+        private static CharacterClass CreateBarbarian()
+        {
+            return CharacterClass.Factory.Create("Bárbaro", Attributes.Factory.Create(15, 10, 10, 10, 10, 10), 12, Axe.Factory.Create());
+        }
+
+        private static CharacterClass CreateDruid()
+        {
+            return CharacterClass.Factory.Create("Druida", Attributes.Factory.Create(10, 10, 10, 10, 15, 10), 8, Staff.Factory.Create());
+        }
+
+        private static CharacterClass CreateMonk()
+        {
+            return CharacterClass.Factory.Create("Monge", Attributes.Factory.Create(10, 10, 10, 10, 10, 15), 8, Staff.Factory.Create());
+        }
+
+        private static CharacterClass CreatePaladin()
+        {
+            return CharacterClass.Factory.Create("Paladino", Attributes.Factory.Create(10, 10, 10, 10, 10, 10), 10, Sword.Factory.Create());
+        }
+
+        private static CharacterClass CreateRanger()
+        {
+            return CharacterClass.Factory.Create("Patrulheiro", Attributes.Factory.Create(10, 10, 10, 10, 10, 10), 10, Staff.Factory.Create());
         }
 
     }

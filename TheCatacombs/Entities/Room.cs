@@ -17,19 +17,20 @@ namespace TheCatacombs.Entities
         public int Width { get; private set; } = 10; // Largura padrão
         public int X { get; private set; } = 0; // Coordenada X da sala no mapa
         public int Y { get; private set; } = 0; // Coordenada Y da sala no mapa
+        public Tuple<int, int> DoorPosition { get; private set; }
         public List<Tuple<int, int>> VisitedPositions { get; private set; } = new List<Tuple<int, int>>();
         public List<MonstersRoomInfo> MonstersPositions;
         public string LastMonsterID { get; private set; }
 
         private static Random random = new Random();
 
-        private Room(string description, MonsterType? monsterType = null)
+        private Room(string description)
         {
             Description = description;
-            MonsterType = monsterType ?? GetRandomMonsterType();
             Level++;
             IsLocked = false;
             VisitedPositions.Add(new Tuple<int, int>(X, Y));
+            DoorPosition = GenerateDoorPosition();
             MonstersPositions = GenerateMonsters();
         }
 
@@ -37,7 +38,7 @@ namespace TheCatacombs.Entities
         {
             public static Room Create(string description, MonsterType? monsterType = null)
             {
-                return new Room(description, monsterType);
+                return new Room(description);
             }
         }
 
@@ -55,9 +56,8 @@ namespace TheCatacombs.Entities
 
         public void DrawRoom()
         {
-            Console.WriteLine(new string('\n', 50));
+            //Console.WriteLine(new string('\n', 50));
 
-            ConsoleUI.DisplayMessage($"POSICOES{X}, {Y}");
             for (int i = Height - 1; i >= 0; i--)
             {
                 for (int j = 0; j < Width; j++)
@@ -65,6 +65,10 @@ namespace TheCatacombs.Entities
                     if (i == Y && j == X)
                     {
                         Console.Write("P"); // Draw the player
+                    }
+                    else if (j == DoorPosition.Item1 && DoorPosition.Item2 == i)
+                    {
+                        Console.Write("D"); // Draw the door
                     }
                     else if (VisitedPositions.Contains(new Tuple<int, int>(j, i)))
                     {
@@ -84,9 +88,18 @@ namespace TheCatacombs.Entities
             Console.WriteLine($"Você está na sala: {Description}");
         }
 
+        private Tuple<int, int> GenerateDoorPosition()
+        {
+            int doorX = random.Next(0, Width);
+            int doorY = Height - 1;
+
+            return new Tuple<int, int>(doorX, doorY);
+        }
+
         private List<MonstersRoomInfo> GenerateMonsters()
         {
             List<MonstersRoomInfo> monsters = new List<MonstersRoomInfo>();
+            HashSet<Tuple<int, int>> occupiedPositions = new HashSet<Tuple<int, int>>();
 
             int numberOfMonsters = random.Next(1, 4);
 
@@ -98,15 +111,21 @@ namespace TheCatacombs.Entities
                 {
                     monsterX = random.Next(0, Width);
                     monsterY = random.Next(0, Height);
-                } while (monsterX == 0 && monsterY == 0);
+                } while (monsterX == 0 && monsterY == 0 || (monsterX == DoorPosition.Item1 && monsterY == DoorPosition.Item2)
+                 || occupiedPositions.Contains(new Tuple<int, int>(monsterX, monsterY)));
 
                 int monsterLevel = random.Next(1, 4);
 
-                monsters.Add(MonstersRoomInfo.Factory.Create(monsterX, monsterY, monsterLevel));
+                var monster = MonsterManager.GenerateRandomMonster();
+
+                monsters.Add(MonstersRoomInfo.Factory.Create(monsterX, monsterY, monsterLevel, monster));
+                occupiedPositions.Add(new Tuple<int, int>(monsterX, monsterY));
             }
 
             return monsters;
         }
+
+
 
         private bool CheckIsBossLevel()
         {

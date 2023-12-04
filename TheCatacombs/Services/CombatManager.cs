@@ -21,7 +21,10 @@ namespace TheCatacombs.Services
         {
             Monster monster;
 
-            monster = MonsterManager.GenerateRandomMonster();
+            if (useRandomMonster)
+                monster = MonsterManager.GenerateRandomMonster();
+            else
+                monster = player.CurrentRoom.MonstersPositions.Find(monster => monster.ID == player.CurrentRoom.LastMonsterID).Monster;
 
             PerformCombat(monster);
         }

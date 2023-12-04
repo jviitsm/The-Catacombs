@@ -20,24 +20,22 @@ namespace TheCatacombs.Services
 
         public void StartExploration()
         {
-
+            ConsoleUI.DisplayMessage($"x{gameManager.GetPlayer().CurrentRoom.X}, y{gameManager.GetPlayer().CurrentRoom.Y}");
             var input = DisplayExplorationOptions();
 
             switch (input)
             {
+
                 case "1":
-                    OpenDoor();
+                    gameManager.StartMoving();
                     break;
                 case "2":
-                    gameManager.GetMovementManager().Move();
+                    characterManager.DisplayCharacterInfo();
+                    gameManager.StartExploration();
                     break;
                 case "3":
-                    characterManager.DisplayCharacterInfo();
-                    StartExploration();
-                    break;
-                case "4":
                     characterManager.DisplayWeaponInfo();
-                    StartExploration();
+                    gameManager.StartExploration();
                     break;
                 case "0":
                     gameManager.StartCombat();
@@ -50,11 +48,11 @@ namespace TheCatacombs.Services
 
         }
 
-        private void OpenDoor()
+        public void EnterNewRoom()
         {
             ConsoleUI.DisplayMessage("Você abriu a porta.");
             GenerateRandomRoom();
-            StartExploration();
+            gameManager.StartExploration();
         }
 
         private void GenerateRandomRoom()
@@ -67,10 +65,9 @@ namespace TheCatacombs.Services
         private string DisplayExplorationOptions()
         {
             ConsoleUI.DisplayMessage("O que você faz?");
-            ConsoleUI.DisplayMessage("1 - Abre a porta");
-            ConsoleUI.DisplayMessage("2 - Explora a sala");
-            ConsoleUI.DisplayMessage("3 - Exibe informações do personagem");
-            ConsoleUI.DisplayMessage("4 - Exibe informações da arma");
+            ConsoleUI.DisplayMessage("1 - Explora a sala");
+            ConsoleUI.DisplayMessage("2 - Exibe informações do personagem");
+            ConsoleUI.DisplayMessage("3 - Exibe informações da arma");
 
             string input = ConsoleUI.GetUserInput();
 

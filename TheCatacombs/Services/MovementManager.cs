@@ -23,18 +23,22 @@ namespace TheCatacombs.Services
                 int currentX = player.CurrentRoom.X;
                 int currentY = player.CurrentRoom.Y;
 
-                Console.Clear();
+                //Console.Clear();
                 ConsoleUI.DisplayMessage("--------------------");
                 player.CurrentRoom.DrawRoom();
                 ConsoleUI.DisplayMessage("--------------------");
+
                 ConsoleUI.DisplayMessage("Escolha a direção para se mover:");
                 ConsoleUI.DisplayMessage("W - Cima");
                 ConsoleUI.DisplayMessage("S - Baixo");
                 ConsoleUI.DisplayMessage("A - Esquerda");
                 ConsoleUI.DisplayMessage("D - Direita");
                 ConsoleUI.DisplayMessage("1 - Sair da movimentação");
+                if (HasDoorAtPosition(currentX, currentY))
+                {
+                    ConsoleUI.DisplayMessage("2 - Abrir porta");
+                }
                 string direction = ConsoleUI.GetUserInput();
-
 
                 switch (direction.ToLower())
                 {
@@ -53,6 +57,9 @@ namespace TheCatacombs.Services
                     case "1":
                         continueMoving = false;
                         gameManager.GetExplorationManager().StartExploration();
+                        break;
+                    case "2":
+                        continueMoving = OpenDoor(currentX, currentY);
                         break;
                     default:
                         ConsoleUI.DisplayMessage("Direção inválida.");
@@ -74,6 +81,12 @@ namespace TheCatacombs.Services
                     gameManager.StartCombat();
                     return false;
                 }
+                else if (HasDoorAtPosition(targetX, targetY))
+                {
+                    ConsoleUI.DisplayMessage("Você encontrou uma porta.");
+                    player.CurrentRoom.SetNewPosition(targetX, targetY);
+                    return true;
+                }
                 else
                 {
                     player.CurrentRoom.SetNewPosition(targetX, targetY);
@@ -81,6 +94,7 @@ namespace TheCatacombs.Services
                     ConsoleUI.DisplayMessage("--------------------");
                     return true;
                 }
+
             }
             else
             {
@@ -89,9 +103,37 @@ namespace TheCatacombs.Services
             }
         }
 
+        private bool OpenDoor(int x, int y)
+        {
+            if (!HasDoorAtPosition(x, y))
+            {
+                ConsoleUI.DisplayMessage("Não há uma porta nessa posição.");
+                return true;
+            }
+            else
+            {
+                if (player.CurrentRoom.IsLocked)
+                {
+                    ConsoleUI.DisplayMessage("A porta está trancada.");
+                    return true;
+                }
+
+                gameManager.GetExplorationManager().EnterNewRoom();
+
+                return true;
+
+            }
+
+        }
+
         private bool HasMonsterAtPosition(int x, int y)
         {
             return player.CurrentRoom.MonstersPositions.Any(monster => monster.X == x && monster.Y == y && !monster.IsDefeated);
+        }
+
+        private bool HasDoorAtPosition(int x, int y)
+        {
+            return player.CurrentRoom.DoorPosition.Item1 == x && player.CurrentRoom.DoorPosition.Item2 == y;
         }
 
         private bool IsValidPosition(int x, int y, int maxX, int maxY)

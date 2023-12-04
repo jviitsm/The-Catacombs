@@ -7,13 +7,13 @@ namespace TheCatacombs.Entities
         public int Y { get; }
         public int Level { get; }
         public bool IsDefeated { get; private set; } = false;
-        public Monster? Monster { get; private set; } = null;
+        public Monster Monster { get; private set; }
 
         public static class Factory
         {
-            public static MonstersRoomInfo Create(int x, int y, int level)
+            public static MonstersRoomInfo Create(int x, int y, int level, Monster monster)
             {
-                return new MonstersRoomInfo(x, y, level);
+                return new MonstersRoomInfo(x, y, level, monster);
             }
         }
 
@@ -22,18 +22,18 @@ namespace TheCatacombs.Entities
             Monster = monster;
         }
 
-
         public void SetDefeated()
         {
             IsDefeated = true;
         }
 
-        private MonstersRoomInfo(int x, int y, int level)
+        private MonstersRoomInfo(int x, int y, int level, Monster monster)
         {
             ID = Guid.NewGuid().ToString();
             X = x;
             Y = y;
             Level = level;
+            Monster = monster;
         }
 
     }

@@ -46,7 +46,7 @@ namespace TheCatacombs.Services
             explorationManager.StartExploration();
         }
 
-        public void StartCombat(bool useRandomMonster = true)
+        public void StartCombat(bool useRandomMonster = false)
         {
             currentState = GameState.Combat;
             combatManager = new CombatManager(this);
@@ -57,6 +57,18 @@ namespace TheCatacombs.Services
         {
             currentState = GameState.Exploration;
             explorationManager.StartExploration();
+        }
+
+        public void StartExploration()
+        {
+            currentState = GameState.Exploration;
+            explorationManager.StartExploration();
+        }
+
+        public void StartMoving()
+        {
+            currentState = GameState.Moving;
+            movementManager.Move();
         }
 
         public GameState GetCurrentState()
@@ -82,6 +94,11 @@ namespace TheCatacombs.Services
         public MovementManager GetMovementManager()
         {
             return movementManager;
+        }
+
+        public void setCurrentState(GameState state)
+        {
+            currentState = state;
         }
     }
 }

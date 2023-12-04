@@ -4,8 +4,9 @@ namespace TheCatacombs.Enums
     {
         MainMenu,
         Exploration,
+        Moving,
         Combat,
         GameOver,
-        // Outros estados do jogo
+
     }
 }
